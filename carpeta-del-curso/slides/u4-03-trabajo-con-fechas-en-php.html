@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Fechas en PHP</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Fechas en PHP</h1>
+				</section>
+				<section>
+					<h2>UNIX <code>timestamp</code></h2>
+					<section>
+						<p><code>UNIX timestamp</code> o Marca Temporal es el número de segundos transcurridos desde el 1 de Enero de 1970</p>
+						<pre contenteditable="true"><code data-trim class="php html">
+							1543753447 // 2 de Diciembre de 2018 12:24:07
+						</code></pre>
+						<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							123456789 // 29 de Noviembre de 1973 21:33:09
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<h2><code>date( $format, $timestamp )</code></h2>
+					<section>
+						<p>Convierte un <code>timestamp</code> a una fecha legible por humanos</p>
+						<pre contenteditable="true"><code data-trim class="php html">
+								echo date( 'd/m/Y' ); // 02/12/2018
+						</code></pre>
+						<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+								echo date( 'd/m/Y', 123456789 ); // 29/11/1973
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<h2>Formatos de fecha</h2>
+					<section>
+						<p><a href="http://php.net/manual/es/function.date.php">http://php.net/manual/es/function.date.php</a></p>
+						<ul>
+							<li><code>d</code> - Día del mes con ceros delante si aplica (01 a 31)</li>
+							<li><code>D</code> - Día de la semana (Mon a Sun o Lu a Vie)</li>
+							<li><code>m</code> - Mes con número con ceros delante si aplica (01 a 12)</li>
+							<li><code>M</code> - Mes abreviado (Jan a Dec o Ene a Dic)</li>
+							<li><code>F</code> - Mes completo (January - December o Enero - Diciembre)</li>
+							<li><code>y</code> - Año con 2 dígitos</li>
+							<li><code>Y</code> - Año con 4 dígitos</li>
+						</ul>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							echo date( 'Y-m-d' ); // 2018-12-02
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo date( 'D, d M' ); // Sun, 02 Dic
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							// Sun, 02 de Diciembre?
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo date( 'D, d \d\e F' );
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo date( 'D, d \d\e F \d\e Y', 123456789 );
+							// Thu, 29 de November de 1973
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							$time = 123456789;
+							echo date( 'D, d', $time )
+							echo ' de '
+							echo date( 'F', $time )
+							echo ' de '
+							echo date( 'Y', $time );
+							// Thu, 29 de November de 1973
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<h2>Formatos de hora</h2>
+					<section>
+						<p><a href="http://php.net/manual/es/function.date.php">http://php.net/manual/es/function.date.php</a></p>
+						<ul>
+							<li><code>h</code> - Hora de 01 a 12</li>
+							<li><code>H</code> - Hora de 01 a 23</li>
+							<li><code>i</code> - Minutos con ceros delante si aplica (00 a 59)</li>
+							<li><code>s</code> - Segundos con ceros delante si aplica (00 a 59)</li>
+							<li><code>a</code> - am o pm</li>
+							<li><code>A</code> - AM o PM</li>
+						</ul>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							echo date( 'h:i' ); // 03:10
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo date( 'h:i A' ); // 03:10 PM
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo date( 'H:i' ); // 15:10 PM
+						</code></pre>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo date( 'H:i:s' ); // 15:10:15
+						</code></pre>
+					</section>
+					<section>
+						<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							$time = 123456789;
+							echo date( 'D, d', $time )
+							echo ' de '
+							echo date( 'F', $time )
+							echo ' de '
+							echo date( 'Y', $time )
+							echo ' a las '
+							echo date( 'H:i' );
+							// Thu, 29 de November de 1973 a las 10:20
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<h2><a href="http://php.net/manual/es/function.strtotime.php">strtotime()</a></h2>
+					<p>Convierte una fecha de texto a timestamp</p>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo strtotime( '2018-01-15 10:15:00' ); // 1516040100
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						$date = '2018-01-15 10:15:00';
+						$timestamp = strtotime( $date );
+						echo date( 'D, d M', $timestamp ); // Mon, 15 Jan
+					</code></pre>
+				</section>
+				<section>
+					<h2>Función <code>time()</code> y <code>mktime()</code></h2>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						// time() devuelve el timestamp actual
+						echo time(); // 1543775775
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						// mktime() devuelve el timestamp basado en una fecha
+						echo mktime( 15, 35, 55, 10, 30, 2018 ); // 1540938955
+						// 30-10-2018 15:35:55
+					</code></pre>
+				</section>
+				<section>
+					<h2>Fechas en otro lenguaje</h2>
+					<section>
+						<p>Lo primero: Con <code>setlocale()</code> se puede cambiar el idioma del servidor</p>
+						<p><a href="http://php.net/manual/es/function.setlocale.php">setlocale</a></p>
+						<p><a href="http://www.loc.gov/standards/iso639-2/php/code_list.php">Lista de localismos</a></p>
+						<p><a href="https://gist.github.com/jacobbubu/1836273">Lista de localismos para iOS</a> (Escribir <code>locale -a</code> en el terminal.</code></p>
+							<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							// Establece el localismo de las fechas al español
+							setlocale( LC_TIME, 'es', 'spa', 'es_ES' );
+						</code></pre>
+					</section>
+					<section>
+						<p>Para mostrar fechas en otro lenguaje:</p>
+						<p><strike><code>date()</code></strike> => <code>strftime()</code></p>
+						<p><a href="http://php.net/manual/es/function.strftime.php">Nuevos formatos de fecha y hora</a></p>
+						<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+							echo strftime( '%B' ); // junio
+						</code></pre>
+					</section>
+					<section>
+						<p>Formatos para <code>strftime()</code></p>
+						<ul>
+							<li><strike>d</strike> -> <code>%d</code> - Día del mes con ceros delante si aplica (01 a 31)</li>
+							<li><strike>D</strike> -> <code>%a</code> - Día de la semana (Mon a Sun o Lu a Vie)</li>
+							<li><strike>m</strike> -> <code>%d</code> - Mes con número con ceros delante si aplica (01 a 12)</li>
+							<li><strike>M</strike> -> <code>%b</code> - Mes abreviado (Jan a Dec o Ene a Dic)</li>
+							<li><strike>F</strike> -> <code>%B</code> - Mes completo (January - December o Enero - Diciembre)</li>
+							<li><strike>y</strike> -> <code>%y</code> - Año con 2 dígitos</li>
+							<li><strike>Y</strike> -> <code>%Y</code> - Año con 4 dígitos</li>
+							<li><strike>i</strike> -> <code>%M</code> - Minutos con dos dígitos</li>
+							<li><strike>H</strike> -> <code>%H</code> - Hora (00 a 23)</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<h2><code>date_default_timezone_set()</code></h2>
+					<p>Establece la zona horaria</p>
+					<p><a href="http://php.net/manual/es/timezones.php">Lista de zonas horarias permitidas</a></p>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						// Establece la zona horaria a Sydney
+						date_default_timezone_set( 'Australia/Sydney' );
+					</code></pre>
+					<br>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						// 2018-12-02 11:32:42
+						echo date( 'Y-m-d H:i:s' );
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						// Establece la zona horaria a Sydney
+						date_default_timezone_set( 'Australia/Sydney' );
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						// 2018-12-03 06:32:42
+						echo date( 'Y-m-d H:i:s' );
+					</code></pre>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				fragmentInURL: true,
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+		<style>
+			.reveal pre {
+				margin-bottom:0;
+				box-shadow:none;
+			}
+			.reveal pre.fragment {
+				margin-top:0;
+			}
+		</style>
+	</body>
+</html>

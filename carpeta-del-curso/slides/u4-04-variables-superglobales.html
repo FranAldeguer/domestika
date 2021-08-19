@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Variables Superglobales</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Variables Superglobales</h1>
+				</section>
+				<section>
+					<pre contenteditable="true"><code data-trim class="php html">
+						$GLOBALS
+						$_SERVER
+						$_GET
+						$_POST
+						$_FILES
+						$_COOKIE
+						$_SESSION
+						$_REQUEST
+						$_ENV
+					</code></pre>
+				</section>
+				<section>
+					<h2><code>$_SERVER</code></h2>
+					<p>Array que contiene información como cabeceras, rutas y ubicaciones de script</p>
+					<p>Depende del servidor, algunos pueden omitir algunos campos</p>
+
+					<pre contenteditable="true"><code data-trim class="php html">
+					  HTTP_HOST - 'localhost:8888'
+					  HTTP_USER_AGENT - 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
+					  HTTP_REFERER - 'http://localhost:8888/'
+					  SERVER_NAME - 'localhost'
+					  SERVER_PORT - '8888'
+					  DOCUMENT_ROOT - '/Applications/MAMP/htdocs'
+					  SCRIPT_FILENAME - '/Applications/MAMP/htdocs/tu-proyecto/index.php'
+					  REQUEST_METHOD - 'GET'
+					  REQUEST_URI - '/tu-proyecto/'
+					</code></pre>
+				</section>
+				<section>
+					<h2><code>$_GET</code></h2>
+					<p>Array que contiene los datos que pasan por la URL</p>
+					<pre contenteditable="true"><code data-trim class="php html">
+						miurl.com?nombre=Ignacio&apellido1=Cruz&apellido2=Moreno
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo $_GET['nombre']; // Ignacio
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo $_GET['apellido1']; // Cruz
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo $_GET['apellido2']; // Moreno
+					</code></pre>
+				</section>
+				<section>
+					<h2><code>$_POST</code></h2>
+					<p>Array que contiene los datos que pasan a través de un request de tipo POST (Normalmente un formulario)</p>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo $_POST['nombre']; // Ignacio
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo $_POST['apellido1']; // Cruz
+					</code></pre>
+					<pre class="fragment" contenteditable="true"><code data-trim class="php html">
+						echo $_POST['apellido2']; // Moreno
+					</code></pre>
+				</section>
+				<section>
+					<h2>Otras superglobales</h2>
+					<ul>
+						<li>$_FILES: Array asociativo de archivos subidos a través de un formulario con método POST</li>
+						<li>$_COOKIE: Array de Cookies del usuario que visita el sitio.</li>
+						<li>$_SESSION: Array donde se puede guardar información sobre un usuario. Al recargar, dicha información no se pierde.</li>
+						<li>$_REQUEST: Contiene <code>$_GET, $POST y $_COOKIE</code>.</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				fragmentInURL: true,
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+		<style>
+			.reveal pre {
+				margin-bottom:0;
+				box-shadow:none;
+			}
+			.reveal pre.fragment {
+				margin-top:0;
+			}
+		</style>
+	</body>
+</html>

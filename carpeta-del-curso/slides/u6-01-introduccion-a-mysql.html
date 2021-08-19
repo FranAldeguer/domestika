@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Introducción a MySQL</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Introducción a MySQL</h1>
+				</section>
+				<section>
+					<h2>¿Qué es?</h2>
+					<p>Sistema de Base de Datos relaciones, gratuíto y fácil de utilizar.</p>
+				</section>
+				<section>
+					<h2>Tablas</h2>
+					<p>MySQL guarda todos los datos en tablas. Una tabla es una colección de datos relacionados con la misma estructura.</p>
+					<pre>
++----+------------+-----------+----------------------+
+| id | first_name | last_name | email                |
++----+------------+-----------+----------------------+
+|  1 | Peter      | Parker    | peterparker@mail.com |
+|  2 | John       | Rambo     | johnrambo@mail.com   |
+|  3 | Clark      | Kent      | clarkkent@mail.com   |
+|  4 | John       | Carter    | johncarter@mail.com  |
+|  5 | Harry      | Potter    | harrypotter@mail.com |
++----+------------+-----------+----------------------+
+					</pre>
+				</section>
+				<section>
+					<h2>SQL, (Structured Query Language)</h2>
+					<p>El lenguaje que utiliza MySQL para sacar, insertar, actualizar o borrar datos en una base de datos.</p>
+					<pre class="fragment" contenteditable="true"><code data-trim class="sql html">
+						SELECT * FROM persons WHERE first_name = 'Clark';
+					</code></pre>
+					<br>
+					<pre class="fragment" contenteditable="true"><code data-trim class="sql html">
+						INSERT INTO persons
+						( first_name, last_name, email )
+						VALUES
+						( 'Bruce', 'Wayne', 'brucewayne@mail.com' );
+					</code></pre>
+					<br>
+					<pre class="fragment" contenteditable="true"><code data-trim class="sql html">
+						DELETE FROM persons WHERE id = 4;
+					</code></pre>
+				</section>
+				<section>
+					<pre class="fragment" contenteditable="true"><code data-trim class="sql html">
+						UPDATE persons SET email = 'batman@mail.com'
+						WHERE first_name = 'Bruce'
+						AND last_name = 'Wayne';
+					</code></pre>
+				</section>
+				<section>
+					<h2>Diagrama de flujo</h2>
+					<section>
+						<img style="background:white" width=500 src="img/mysql0.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql1.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql2.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql3.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql4.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql5.png" alt="">
+					</section>
+					<section>
+						<img style="background:white" width=500 src="img/mysql6.png" alt="">
+					</section>
+
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				fragmentInURL: true,
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+		<style>
+			.reveal pre {
+				margin-bottom:0;
+				box-shadow:none;
+			}
+			.reveal pre.fragment {
+				margin-top:0;
+			}
+			.reveal table th, .reveal table td {
+				border:1px solid;
+			}
+			.reveal table tbody tr:last-child th, .reveal table tbody tr:last-child td {
+				border-bottom:1px solid;
+			}
+		</style>
+	</body>
+</html>

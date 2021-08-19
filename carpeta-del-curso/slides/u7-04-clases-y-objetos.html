@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Clases y Objetos</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1>Clases y Objetos</h1>
+				</section>
+				<section>
+					<h2>OOP: Object Oriented Programming</h2>
+					<p>Se programa con objetos y clases en vez de con funciones</p>
+					<p>Ventajas:</p>
+					<ul>
+						<li>Estructura modular</li>
+						<li>Código más fácil de mantener</li>
+					</ul>
+					<p>Desventaja: Mucho más difícil para empezar.</p>
+				</section>
+				<section>
+					<section>
+						<h2>Entendiendo clases y objetos</h2>
+						<p>Una <strong>Clase</strong> es una forma de crear una plantilla para los <strong>objetos</strong></p>
+						<img src="img/clases-1.png" alt="">
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							class Casa {
+								// Propiedades de clase
+								public $anchura = 0;
+								public $longitud = 0;
+
+								// Métodos de clase
+								public function __construct( $a, $l ) {
+									$this->anchura = $a;
+									$this->longitud = $l;
+								}
+
+								public function get_area() {
+									return ( $this->anchura * $this->longitud ) . 'm2';
+								}
+							}
+						</code></pre>
+						<pre contenteditable="true"><code data-trim class="php html">
+							$casa_peque = new Casa( 10, 5 );
+							echo $casa_peque->get_area(); // 50m2
+						</code></pre>
+						<pre contenteditable="true"><code data-trim class="php html fragment">
+							$casa_grande = new Casa( 10, 50 );
+							echo $casa_grande->get_area(); // 500m2
+						</code></pre>
+						<pre contenteditable="true"><code data-trim class="php html fragment">
+							$casa_grande->anchura = 100;
+							echo $casa_grande->get_area(); // 5000m2
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Herencia de clases</h2>
+						<p>Una clase puede heredar todas las propiedades de su clase padre</p>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							class Figura {
+								public $lados = 0;
+								public $cm_por_lado = 0;
+
+								public function __construct( $c ) {
+									$this->cm_por_lado = $c;
+								}
+
+								public function get_area() {
+									return 0;
+								}
+
+								public function get_perimetro() {
+									return $this->lados * $this->cm_por_lado;
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							class Cuadrado extends Figura {
+								public $lados = 4;
+
+								public function get_area() {
+									return $this->cm_por_lado * $this->cm_por_lado;
+								}
+							}
+						</code></pre>
+						<pre contenteditable="true"><code data-trim class="php html fragment">
+							class Pentagono extends Figura {
+								public $lados = 5;
+
+								public function get_area() {
+									return $this->get_perimetro() * $this->get_apotema() / 2;
+								}
+
+								public function get_apotema() {
+									return $this->cm_por_lado / 1.45;
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							$cuadrado = new Cuadrado( 5 );
+							$pentagono = new Pentagono( 8 );
+							echo $cuadrado->get_area(); // 25
+							echo $pentagono->get_area(); // 66.20
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<h2>Visibilidad de métodos y propiedades</h2>
+					<section>
+						<p>Tres maneras de visibilizar métodos y propiedades:</p>
+						<ul>
+							<li><code>public</code>: Se puede usar desde dentro y fuera de la clase</li>
+							<li><code>protected</code>: Se puede usar desde dentro de la clase y subclases</li>
+							<li><code>private</code>: Sólo se puede usar desde la misma clase</li>
+						</ul>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							class Automovil {
+								public $tipo_de_gasolina;
+								protected $motor;
+								private $transmision;
+							}
+							class Coche extends Automovil {
+								public function get_motor() {
+									return $this->motor; // Correcto, motor es protected
+								}
+								public function get_transmision() {
+									return $this->transmision; // Error fatal (private)
+								}
+							}
+						</code></pre>
+					</section>
+					<section>
+						<pre contenteditable="true"><code data-trim class="php html">
+							$coche = new Coche();
+							$coche->tipo_de_gasolina; // Correcto
+							$coche->transmision; // Error fatal (private)
+							$coche->motor; // Error fatal (protected)
+						</code></pre>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				fragmentInURL: true,
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+		<style>
+			.reveal pre {
+				margin-bottom:0;
+				box-shadow:none;
+			}
+			.reveal pre.fragment {
+				margin-top:0;
+			}
+			.reveal table th, .reveal table td {
+				border:1px solid;
+			}
+			.reveal table tbody tr:last-child th, .reveal table tbody tr:last-child td {
+				border-bottom:1px solid;
+			}
+		</style>
+	</body>
+</html>
