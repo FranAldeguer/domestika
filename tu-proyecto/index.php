@@ -62,7 +62,6 @@
   $comillas_simples = 'Francisco';
   $comillas_dobles = "Francisco";
 
-
 // Si ponemos una frase entre comillas dobles, mostrará el valor de la variable
   var_dump( "Mi nombre es $comillas_simples" ); // => 'Mi nombre es Francisco'
   var_dump( "Mi nombre es $comillas_dobles" ); // => 'Mi nombre es Francisco'
@@ -99,6 +98,8 @@
   var_dump($edades);
 
   var_dump($edades['Maria']);
+
+  var_dump("WTF is THIS?¿");
 
   $all_posts = [
   	[
