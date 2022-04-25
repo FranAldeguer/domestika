@@ -1,0 +1,102 @@
+Seguridad en php
+
+SANEAR LA ENTRADA DE DATOS
+**************************
+
+Ataque - CROSS-SITE SCRIPTING (https://es.wikipedia.org/wiki/Cross-site_scripting)
+Nos meterían código html/css/javascript en algún campo del formulario y eso hace que cada vez que ese dato saliera, nos estaría jodiendo la web
+Nunca hay que confiar en el usuario, hay que filtrar absolutamente todo lo que venga de formularios
+
+--- Función filter_input() https://www.php.net/manual/es/function.filter-input.php
+    $title = filter_input( INPUT_POST, 'title', FILTER_SANITIZE_STRING );
+
+      Con esta función, cogemos los datos que nos pasa el usuario en el campo y lo saneamos según el filtro que elijamos.
+      Con filter_input cogemos la variable externa que queramos para sanearla
+      INPUT_POST = $_POST()
+      'title' el nombre de la variable
+      FILTER_SANITIZE_STRING = Este fitlro, elimina todas las <etiquetas> del texto
+      Más filtros: https://www.php.net/manual/es/filter.filters.sanitize.php
+
+--- Función strip_tags() https://www.php.net/manual/es/function.strip-tags.php
+    $content = strip_tags($_POST['content'], '<br><p><b><a><img>');
+
+      Con strip_tags eliminamos todas las <etiquetas>, excepto las que le indiquemos a continuación
+      Esto puede ser útil en textareas donde podríamos querer que el usuario añada párrafos, negritas, imágenes...
+
+
+SANEAR CONTENIDO DE SALIDA
+**************************
+
+--- Función htmlspecialchars https://www.php.net/manual/es/function.htmlspecialchars.php
+    echo htmlspecialchars($title, ENT_QUOTES);
+
+      Comprobar el contenido que nos viene desde la base de datos
+      Con htmlspecialchars convertimos los caracteres espceciales en entidades html
+      Es un signo < lo convertirá en &lt; Unas comillas simples '' en #039; etc...
+      Todo dependerá del tipo de filtro de saneamiento que le pongamos
+
+
+INYECCIÓN DE SQL
+****************
+
+Ataque - SQL injection https://es.wikipedia.org/wiki/Inyecci%C3%B3n_SQL
+Intentar meter, dentro de una variable, una consulta a la base de datos
+
+--- Función mysqli_real_escape_string() https://www.php.net/manual/es/mysqli.real-escape-string.php
+    $title = mysqli_real_escape_string ($app_db, $title);
+
+      Le enviaos el objeto de DB y la cadena y nos devuelve la misma cadena saneada.
+      Esta función sanea la variable para que sea válida para pasarla como parámetro a la query
+      Además, escapa algunos caracteres como comillas, etc...
+      Esta fucnión solo funciona con strings
+
+
+--- Función intval() https://www.php.net/manual/es/function.intval.php
+    $id = intval ( $id );
+
+      Esta función nos devuelve el valor entero de la variable que le pasamos como parámetro
+      Sirve cuando nos queremos asegurar que un campo en concreto sea siempre un número
+      Por si acaso alguien ha conseguido meternos en ese campo otro tipo de contenido
+
+
+CROSS-SITE REQUEST FORGERY
+**************************
+
+Ataque - CROSS-SITE REQUEST FORGERY https://es.wikipedia.org/wiki/Cross-site_request_forgery
+Nos llega un email con un enlace a una página en la que estamos logueados como administradores, con una query para borrar datos nuestros
+La gente que nos lo envía sabe que somos admins de ese sitio
+Para evitar esto, necesitamos que la url que vaya a la función de borrar, lleve un hash
+Para ello, crearemos una función en helpers.php que genere un hash y se lo añadiremos a la url al enviarlo
+Después comprobaremos con otra función, si el hash que le hemos pasado y el hash que se le DEBERÍA haber pasado son iguales
+Si es así, podremos seguir con la ejecución, sino ALV
+
+--- Para este ataque, no existe una función como tal, sino que tenemos que proteger la web en varios sitios
+
+      index.php
+        <a href="?delete-post=<?php echo $post['id']; ?>&hash=<?php echo generate_hash( 'delete-post-' . $post['id']); ?>"> Eliminar post </a>
+        La url real con la que vamos a borrar el post, con el hash incluido (index.php)
+
+
+        if (isset ($_GET['delete-post'])) {
+        	if ( !check_hash ('delete-post-' . $_GET['delete-post'], $_GET['hash'] ) ){
+        		die( 'hackeando, no?');
+        	}
+        	delete_post($_GET['delete-post']);
+        	redirect_to( 'index.php?delete-post-ok=ok');
+        }
+        Antes de llamar a la función de borrar, comprobamos si el hash que nos ha pasado es correcto.
+        Si es así, entonces borramos la entrada, sino paramos la ejecución.
+
+      helpers.php
+
+        function generate_hash( $action ){ return md5 ( $action ); }
+        Crearemos un hash según la cadena que nos llegue
+
+        function check_hash( $action, $hash ){
+          if (generate_hash($action) === $hash){
+            return true;
+          }
+          return false;
+        }
+        Le pasaremos el hash que nos ha venido dado en la url y el la cadena con la que debería haberse generado el hash
+        Entonces comparamos el hash recibido y el hash generado con la cadena correcta

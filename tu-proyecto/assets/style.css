@@ -695,6 +695,13 @@ nav#site-navigation ul a:hover {
 	color:white;
 }
 
+.delete-post {
+	background: #ff0000;
+	padding:1.5rem;
+	margin-bottom:1rem;
+	color:white;
+}
+
 textarea {
 	width:100% !important;
 	height:150px;
