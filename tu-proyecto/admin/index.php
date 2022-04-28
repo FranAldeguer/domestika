@@ -53,13 +53,13 @@ switch ( $action ) {
         }
       }
 
-
         if (isset($_POST['submit-update-post'])){
-
           $title = filter_input( INPUT_POST, 'title', FILTER_SANITIZE_STRING );
           $excerpt = filter_input( INPUT_POST, 'excerpt', FILTER_SANITIZE_STRING );
           $id = filter_input( INPUT_POST, 'postid', FILTER_SANITIZE_STRING );
           $content = strip_tags($_POST['content'], '<br><p><b><a><img>');
+
+
 
           $id = $_POST['postid'];
 
@@ -67,14 +67,17 @@ switch ( $action ) {
             $error = true;
           }else{
 
+            if ( !check_hash ('update-post-' . $id, $_GET['hash'] ) ){
+              die( 'No toques las cosas de tocar');
+            }
+
             update_post($id, $title, $excerpt, $content);
-            // Redirigimos a la home, después de insertar
+            // Redirigimos a la vista del post, después de insertar
             redirect_to ('?updated=true&view='.$id);
           }
         }
 
     require 'templates/new-post.php';
-
     break;
   }
   case 'list-posts': {

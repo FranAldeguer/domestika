@@ -6,6 +6,7 @@
  * Modificar la url del sitio, la conexión a la DB y el usuario ADMIN
  */ 
 
+// Mostrar errores por pantalla
 error_reporting(E_ALL);
 ini_set ( 'display_errors', 1);
 

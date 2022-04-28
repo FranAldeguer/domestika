@@ -32,10 +32,10 @@ if(isset($_POST['submit-login'])){
 
 <form action="" method="post">
   <label for="username"> Usuario: </label>
-  <input type="text" name="username" id="username">
+  <input type="text" name="username" id="username" placeholder="Usuario: ">
 
   <label for="password"> Contraseña: </label>
-  <input type="password" name="password" id="password">
+  <input type="password" name="password" id="password" placeholder="Contraseña">
 
   <input type="hidden" name="hash" value="<?php echo htmlspecialchars( generate_hash('login'), ENT_QUOTES); ?>">
 
@@ -45,4 +45,4 @@ if(isset($_POST['submit-login'])){
 
 </form>
 
-  <?php require('templates/footer.php'); ?>
+<?php require('templates/footer.php'); ?>

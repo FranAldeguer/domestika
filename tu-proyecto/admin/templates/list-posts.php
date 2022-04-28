@@ -15,9 +15,9 @@
       <tr>
         <td> <?php echo $post['title']; ?> </td>
         <td>
-          <a href="<?php echo SITE_URL ?>/admin?action=new-post&update-post=<?php echo $post['id']; ?>"> Modificar </a>
+          <?php echo generate_update_post_url($post['id'], "Modificar"); ?>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <a href="<?php echo SITE_URL ?>/admin?action=list-posts&delete-post=<?php echo $post['id']; ?>&hash=<?php echo generate_hash( 'delete-post-' . $post['id']); ?>"> Eliminar </a>
+          <?php echo generate_delete_post_url($post['id'], "Eliminar"); ?>
         </td>
       </tr>
     <?php endforeach?>

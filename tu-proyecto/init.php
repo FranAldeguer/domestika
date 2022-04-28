@@ -18,11 +18,19 @@ date_default_timezone_set(SITE_TIMEZONE);
 /*
  * La función mysqli_connect devuelve un RECURSO
  * Este recurso, si hubiera un error en la conexión, devolvería FALSE
- */
-$app_db = mysqli_connect ( DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT );
 
+$app_db = mysqli_connect ( DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT );
+if ($app_db == false){
+  die("Error al conectar con la base de datos");
+}
+*/
+
+
+require('inc/class-db.php');
 require('inc/posts.php');
 require('inc/helpers.php');
+
+$app_db = new Db(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);
 
 if(isset($_GET['logout'])){
   logout();
