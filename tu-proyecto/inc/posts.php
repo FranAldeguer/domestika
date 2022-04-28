@@ -30,9 +30,13 @@ function insert_post($title, $excerpt, $content){
   $title = $app_db->real_escape_string( $title);
   $excerpt = $app_db->real_escape_string($excerpt);
   $content = $app_db->real_escape_string($content);
+  $author = null;
+  if(isset($_SESSION['user_name'])){
+    $author = $_SESSION['user_id'];
+  }
   $query = "INSERT into posts
-  (title, excerpt, content, published_on)
-  VALUES ('$title','$excerpt','$content','$published_on')";
+  (title, excerpt, content, published_on, user)
+  VALUES ('$title','$excerpt','$content','$published_on', '$author')";
   $app_db->query( $query );
 }
 

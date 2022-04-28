@@ -1,8 +1,5 @@
 <?php
 
-/**
- *
- */
 class Db {
 
   private $app_db = false;
@@ -13,6 +10,7 @@ class Db {
       die("Error al conectar con la base de datos");
     }
   }
+
   public function query($query){
     $result = mysqli_query ($this->app_db, $query);
     if(!$result){
@@ -37,8 +35,9 @@ class Db {
     return mysqli_real_escape_string($this->app_db, $string);
   }
 
+  public function __toString(){
+    return "Hola, soy el string de la clase DB";
+  }
 
 }
-
-
- ?>
+?>

@@ -25,13 +25,20 @@ function check_hash( $action, $hash ){
   return false;
 }
 
-function is_logged_in(){
+// Función para comprobar si el usuario está logueado, cuando se loguea con config.php
+function is_logged_in_CONFIGPHP(){
   $is_user_loged_in = isset($_SESSION['user']) && $_SESSION['user'] === ADMIN_USER;
   return $is_user_loged_in;
 }
 
+// Función para comprobar si el usuario está logueado, cuando se loguea con DB
+function is_logged_in(){
+  $is_user_loged_in = isset($_SESSION['user_name']) && isset($_SESSION['user_id']);
+  return $is_user_loged_in;
+}
+
 // Función para loguearse desde las credenciales de config.php
-function loggin($userlog, $passlog){
+function loggin_CONFIGPHP($userlog, $passlog){
   if( $userlog === ADMIN_USER && $passlog === ADMIN_PASS){
     $_SESSION['user'] = ADMIN_USER;
     return true;
@@ -40,40 +47,37 @@ function loggin($userlog, $passlog){
 }
 
 // Función para loguearse desde DB
-function logginDB($userlog, $passlog){
+function loggin($userlog, $passlog){
   global $app_db;
-
-  if(!$app_db){
-    die("Error al conectar con la base de datos");
-  }
 
   $query = "SELECT * FROM users WHERE username = '$userlog' AND password = '$passlog'" ;
 
-  $result = mysqli_query ($app_db, $query);
+  $result = $app_db->query($query);
+
+  $user = $app_db->fetch_assoc( $result );
 
 
-  if( $result ){
-    // mysqli_fetch_assoc nos devuelve únicamente el primer resultado de la query y de forma asociativa
-    $user_found = mysqli_fetch_assoc( $result);
-
-    if(!isset($user_found)){
-      die("El usuario o la contraseña son incorrectos");
-    }
-    else{
-      $_SESSION['user'] = $userlog;
-      return true;
-    }
-  }  else {
-    die(mysqli_error($app_db));
+  if(!isset($user)){
+    die("El usuario o la contraseña son incorrectos");
   }
+  else{
 
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['username'];
+    $_SESSION['user_email'] = $user['email'];
+    $_SESSION['user_role'] = $user['role'];
+
+    return true;
+  }
 
 }
 
-
-
 function logout(){
-  unset ($_SESSION['user']);
+  unset ($_SESSION['user_id']);
+  unset ($_SESSION['user_name']);
+  unset ($_SESSION['user_email']);
+  unset ($_SESSION['user_role']);
+
   redirect_to('index.php');
   session_destroy();
 }

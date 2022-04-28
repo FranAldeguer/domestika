@@ -59,8 +59,6 @@ switch ( $action ) {
           $id = filter_input( INPUT_POST, 'postid', FILTER_SANITIZE_STRING );
           $content = strip_tags($_POST['content'], '<br><p><b><a><img>');
 
-
-
           $id = $_POST['postid'];
 
           if( empty($title) || empty($content)){
