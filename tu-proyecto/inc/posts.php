@@ -4,7 +4,10 @@
 */
 function get_all_posts(){
   global $app_db;
-  $result = $app_db->query("SELECT * FROM posts order by id DESC");
+  //$query = "SELECT * FROM posts order by id DESC";
+  $query = "SELECT p.*, u.username FROM posts p, users u WHERE p.user = u.id order by p.id DESC";
+
+  $result = $app_db->query($query);
   return $app_db->fetch_all($result);
 
 }
@@ -17,6 +20,8 @@ function get_post( $id ){
   global $app_db;
   $id = intval ( $id );
   $query = "SELECT * FROM posts WHERE id = " . $id;
+  $query = "SELECT p.*, u.username FROM posts p, users u WHERE p.user = u.id and p.id = " . $id;
+
   $result = $app_db->query ($query);
   return $app_db->fetch_all($result);
 }

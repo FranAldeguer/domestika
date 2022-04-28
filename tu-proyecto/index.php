@@ -43,6 +43,7 @@ if( isset($_GET['view'])){
 
 <div class="posts">
 	<?php foreach ($all_posts as $post): ?>
+
 		<article class="post">
       <!-- Título del post -->
 			<header>
@@ -61,12 +62,12 @@ if( isset($_GET['view'])){
 
 			<?php if(is_logged_in() && isset($_GET['view'])) : ?>
 				<div class="post-content">
-					<?php echo generate_update_post_url($post['id'], "Modificar post");?>
+					<br><p><?php echo generate_update_post_url($post['id'], "Modificar post");?></p>
 				</div>
 			<?php endif; ?>
       <footer>
         <span class="post-date"> Publicado en:
-          <?php echo strftime('%d %b %Y', strtotime($post['published_on'])) ?>
+          <?php echo strftime('%d %b %Y', strtotime($post['published_on'])) . " por " . $post['username'] ?>
         </span>
       </footer>
     </article>
