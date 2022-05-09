@@ -19,7 +19,6 @@ function get_all_posts(){
 function get_post( $id ){
   global $app_db;
   $id = intval ( $id );
-  $query = "SELECT * FROM posts WHERE id = " . $id;
   $query = "SELECT p.*, u.username FROM posts p, users u WHERE p.user = u.id and p.id = " . $id;
 
   $result = $app_db->query ($query);

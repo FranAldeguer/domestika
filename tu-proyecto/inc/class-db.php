@@ -36,7 +36,7 @@ class Db {
   }
 
   public function __toString(){
-    return "Hola, soy el string de la clase DB";
+    return __CLASS__ . "::__toString()";
   }
 
 }

@@ -47,8 +47,8 @@ if( isset($_GET['view'])){
 		<article class="post">
       <!-- Título del post -->
 			<header>
-				<a href ="?view=<?php echo $post['id']; ?>" ><h2 class="post-title"> <?php echo $post['title']; ?> </a>
-      </header>
+				<h2 class="post-title"><a href ="?view=<?php echo $post['id']; ?>" > <?php echo $post['title']; ?> </a></h2> 
+     	 	</header>
       <!-- Extracto o contendio del post -->
       <div class="post-content">
         <?php if($post_found){

@@ -32,15 +32,16 @@ if($is_update){
   -->
   <label for="title"> Título </label>
   <input type="text" name="title" id="title" value="<?php echo htmlspecialchars($title, ENT_QUOTES); ?>">
-
+      
   <label for="excerpt"> Extracto </label>
   <input type="text" name="excerpt" id="excerpt" value="<?php echo htmlspecialchars($excerpt, ENT_QUOTES); ?>">
 
   <label for="content"> Contenido </label>
   <textarea name="content" id="content" cols="30" rows="30"><?php echo htmlspecialchars($content, ENT_QUOTES); ?></textarea>
 
+
   <input type="submit"
-    name="<?php echo !$is_update ? 'submit-new-post' : 'submit-update-post' ?>"
+    name="<?php echo !$is_update ? 'submit-new-post' : 'submit-update-post'?>"
     value="<?php echo !$is_update ? 'Nuevo Post' : 'Actualizar post'?>"
   >
 

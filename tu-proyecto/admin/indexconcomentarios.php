@@ -21,11 +21,27 @@ switch ( $action ) {
       $published_on = '';
 
       if (isset($_POST['submit-new-post'])){
+                            /******************************
+                             * SANEAR LA ENTRADA DE DATOS *
+                             ******************************/
+        /*
+         * Con filter_input cogemos la variable externa que queramos para sanearla
+         * INPUT_POST = $_POST()
+         * 'title' el nombre de la variable
+         * FILTER_SANITIZE_STRING = Elimina todas las <etiquetas> del texto
+         * Hay muchos más filtros con muchas opciones aquí: https://www.php.net/manual/es/function.filter-input.php
+         */
 
+         // $title = $_POST['title']; -- ESTO NO ES SEGURO
         $title = filter_input( INPUT_POST, 'title', FILTER_SANITIZE_STRING );
         //$excerpt = $_POST['excerpt']; -- ESTO NO ES SEGURO
         $excerpt = filter_input( INPUT_POST, 'excerpt', FILTER_SANITIZE_STRING );
 
+        /*
+         * Con strip_tags eliminamos todas las <etiquetas>, excepto las que le indiquemos a continuación
+         * Esto puede ser útil en textareas donde podríamos querer que el usuario añada párrafos, negritas, imágenes...
+         */
+        // $content = $_POST['content']; -- ESTO NO ES SEGURO
         $content = strip_tags($_POST['content'], '<br><p><b><a><img>');
 
         if( empty($title) || empty($content)){
@@ -45,12 +61,12 @@ switch ( $action ) {
 
           $id = $_POST['postid'];
 
-          if( empty($title) || empty($content) ){
+          if( empty($title) || empty($content)){
             $error = true;
           }else{
 
             if ( !check_hash ('update-post-' . $id, $_GET['hash'] ) ){
-              die( 'No toques las cosas de tocar ;)');
+              die( 'No toques las cosas de tocar');
             }
 
             update_post($id, $title, $excerpt, $content);
@@ -62,9 +78,8 @@ switch ( $action ) {
     require 'templates/new-post.php';
     break;
   }
-
   case 'list-posts': {
-    if (isset ($_GET['delete-post']) && isset($_GET['hash'])) {
+    if (isset ($_GET['delete-post'])) {
 
     	if ( !check_hash ('delete-post-' . $_GET['delete-post'], $_GET['hash'] ) ){
     		die( 'hackeando, no?');
@@ -81,64 +96,7 @@ switch ( $action ) {
     break;
   }
 
-  case 'view-profile': {
-    require 'templates/user-profile.php';
-    break;
-  }
-
-  case 'new-user':{
-    $error = false;
-    $id  = "";
-    $name = "";
-    $email = "";
-    $password = "";
-    $role = "";
-
-    $nuevoUsuario = new User($name, $email, $password, $role);
-
-    if(isset($_POST['submit-update-user']) || isset($_POST['submit-new-user'])){
-      $nuevoUsuario->setName(filter_input( INPUT_POST, 'name', FILTER_SANITIZE_STRING ));
-      $nuevoUsuario->setEmail(filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING ));
-      $nuevoUsuario->setPassword(filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING ));
-      $nuevoUsuario->setRole(filter_input( INPUT_POST, 'role', FILTER_SANITIZE_STRING ));
-    }
-    
-    if(isset($_POST['submit-new-user'])){
-        $nuevoUsuario->insertUser();
-        redirect_to('admin?action=list-users&success=new');
-    }
-    
-    if(isset($_POST['submit-update-user'])){
-        $nuevoUsuario->setId(filter_input( INPUT_POST, 'userid', FILTER_SANITIZE_STRING ));
-        $nuevoUsuario->updateUser();
-        redirect_to ('admin?action=list-users&success=update');
-        
-    }
-    
-
-    require 'templates/new-user.php';
-    break;
-  }
-
-  case 'list-users':{
-    $error = false;
-    $all_users = User::_getAllUsers();
-    
-    
-    if(isset($_GET['delete-user']) && isset($_GET['hash'])){        
-        if(check_hash("delete-user-".$_GET['delete-user'], $_GET['hash'])){
-            User::_getUser($_GET['delete-user'])->deleteUser();
-        }
-        redirect_to('admin?action=list-users&delete-post-ok=ok');
-    }
-
-    require 'templates/list-users.php';
-    break;
-
-  }
-
   default:{
     require 'templates/admin.php';
-    break;
   }
 }

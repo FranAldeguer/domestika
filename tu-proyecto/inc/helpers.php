@@ -91,3 +91,13 @@ function generate_delete_post_url($id, $text){
   <a href="<?php echo SITE_URL ?>/admin?action=list-posts&delete-post=<?php echo $id; ?>&hash=<?php echo generate_hash( 'delete-post-' . $id); ?>"> <?php echo $text ?> </a>
   <?php
 }
+
+function generate_update_user_url($id, $text){
+    return "<a href=" . SITE_URL . "/admin?action=new-user&update-user=" . $id . "&hash=". generate_hash( 'update-user-'.$id) .">".$text."</a>";
+}
+
+function generate_delete_user_url($id, $text){
+    ?>
+  <a href="<?php echo SITE_URL ?>/admin?action=list-users&delete-user=<?php echo $id; ?>&hash=<?php echo generate_hash( 'delete-user-' . $id); ?>"> <?php echo $text ?> </a>
+  <?php
+}

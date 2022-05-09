@@ -1,0 +1,47 @@
+Crear hash para la hora de modificar y borrar usuarios
+
+Borrar usuarios
+
+Modificar usuarios
+
+Guardar la contraseña encriptada en la DB
+
+Roles de usuarios
+	- Sin rol:	* Ver posts
+				* Acceder a loggin
+	- Creador	* Todo lo anterior y...
+				* Ver sus posts
+				* Editarlos
+				* Borrarlos
+	- Editor	* Todo lo anterior y...
+				* Modificar los posts de los demás
+				* Borrar los posts de los demás
+	- Admin		* Todo lo anterior y...
+				* Gestionar usuarios
+
+En la parte de admin, hacer una columna de gestionar posts y otra para usuarios
+
+Pasar posts a poo
+
+Añadir método ini a las clases
+
+Añadir seguridad a los nuevos campos de añadir y modificar usuarios
+
+Añadir imágenes a los posts
+
+Añadir paginación
+
+-- Java Script --
+
+
+
+
+CRear una app de To-do list
+
+	- En la parte inferior, siempre un text field para añadir
+	- Tener diferentes usuarios en la DB
+	- Cada usuario que tenga sus to-do
+	- Poder borrar y modificar las tareas
+	- Si modificas la tarea le puedes añadir notas con un text area
+	- Si le añades notas, en el listado que se vean las notas debajo de la tarea, un poquito mas pequeño
+	- Poder seleccionar varias listas (avanzado)
