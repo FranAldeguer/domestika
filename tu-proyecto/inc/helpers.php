@@ -47,7 +47,7 @@ function loggin_CONFIGPHP($userlog, $passlog){
 }
 
 // Función para loguearse desde DB
-function loggin($userlog, $passlog){
+function loggin_noseguro($userlog, $passlog){
   global $app_db;
 
   $query = "SELECT * FROM users WHERE username = '$userlog' AND password = '$passlog'" ;
@@ -72,6 +72,33 @@ function loggin($userlog, $passlog){
 
 }
 
+function loggin($userlog, $passlog){
+  global $app_db;
+
+  $query = "SELECT * FROM users WHERE username = '$userlog'" ;
+
+  $result = $app_db->query($query);
+
+  $user = $app_db->fetch_assoc( $result );
+
+  if(!isset($user)){
+    die("El usuario es incorrecto");
+  }
+
+  if(!password_verify($passlog, $user['password'])){
+    die("La contraseña es incorrecta");
+  }
+  else{
+
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['username'];
+    $_SESSION['user_email'] = $user['email'];
+    $_SESSION['user_role'] = $user['role'];
+
+    return true;
+  }
+
+}
 function logout(){
   unset ($_SESSION['user_id']);
   unset ($_SESSION['user_name']);

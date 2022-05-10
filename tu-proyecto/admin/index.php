@@ -99,22 +99,21 @@ switch ( $action ) {
     if(isset($_POST['submit-update-user']) || isset($_POST['submit-new-user'])){
       $nuevoUsuario->setName(filter_input( INPUT_POST, 'name', FILTER_SANITIZE_STRING ));
       $nuevoUsuario->setEmail(filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING ));
-      $nuevoUsuario->setPassword(filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING ));
+      $nuevoUsuario->setPassword(password_hash(filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING ), PASSWORD_BCRYPT));
       $nuevoUsuario->setRole(filter_input( INPUT_POST, 'role', FILTER_SANITIZE_STRING ));
     }
-    
+
     if(isset($_POST['submit-new-user'])){
         $nuevoUsuario->insertUser();
         redirect_to('admin?action=list-users&success=new');
     }
-    
+
     if(isset($_POST['submit-update-user'])){
         $nuevoUsuario->setId(filter_input( INPUT_POST, 'userid', FILTER_SANITIZE_STRING ));
         $nuevoUsuario->updateUser();
         redirect_to ('admin?action=list-users&success=update');
-        
+
     }
-    
 
     require 'templates/new-user.php';
     break;
@@ -123,9 +122,8 @@ switch ( $action ) {
   case 'list-users':{
     $error = false;
     $all_users = User::_getAllUsers();
-    
-    
-    if(isset($_GET['delete-user']) && isset($_GET['hash'])){        
+
+    if(isset($_GET['delete-user']) && isset($_GET['hash'])){
         if(check_hash("delete-user-".$_GET['delete-user'], $_GET['hash'])){
             User::_getUser($_GET['delete-user'])->deleteUser();
         }
