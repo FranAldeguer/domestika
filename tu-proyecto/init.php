@@ -28,7 +28,8 @@ if ($app_db == false){
 
 require('inc/class-db.php');
 require('inc/class-user.php');
-require('inc/posts.php');
+//require('inc/posts.php');
+require('inc/class-post.php');
 require('inc/helpers.php');
 
 $app_db = new Db(DB_HOST, DB_USER, DB_PASS, DB_DATABASE, DB_PORT);

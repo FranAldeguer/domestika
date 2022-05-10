@@ -8,16 +8,20 @@
 <?php
 
 // Recuperar todos los posts de la base de datos
-$all_posts = get_all_posts();
+$all_posts = Post::_getAllPosts();
+
+//var_dump($all_posts);
+
 $post_found = false;
 
+//$posttemp =  Post::_getPost($_GET['view']);
+//var_dump($posttemp);
 // Recupera un post de la base de datos
 if( isset($_GET['view'])){
 
-	$all_posts = get_post($_GET['view']);
-
+	$all_posts = Post::_getPost($_GET['view']);
 	if ( $post_found ){
-		die("llega ok");
+		die("llega ok - index.php:19");
 
 		$all_posts = $post_found;
 	}
