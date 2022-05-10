@@ -706,3 +706,8 @@ textarea {
 	width:100% !important;
 	height:150px;
 }
+
+tr.table-header > td{
+	font-weight: 500;
+	text-align: center;
+}

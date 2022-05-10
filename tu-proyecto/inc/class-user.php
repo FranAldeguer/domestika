@@ -70,7 +70,7 @@
     public static function _getAllUsers(){
       global $app_db;
 
-      $query = "SELECT * FROM users";
+      $query = "SELECT * FROM users WHERE id != 0";
       $result = $app_db->query($query);
 
       $usuarios = $app_db->fetch_all($result);
