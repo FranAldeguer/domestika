@@ -128,3 +128,93 @@ function generate_delete_user_url($id, $text){
   <a href="<?php echo SITE_URL ?>/admin?action=list-users&delete-user=<?php echo $id; ?>&hash=<?php echo generate_hash( 'delete-user-' . $id); ?>"> <?php echo $text ?> </a>
   <?php
 }
+
+/**
+ * 
+ * @param $_FILES['img'] $imgInput
+ * @param int $anchoInput
+ * @param int $altoInput
+ * @param string $nombre
+ */
+function redimensionarImg($imgInput, $anchoInput, $altoInput, $nombre, $imgDir) {
+    
+    
+    $image = imagecreatefromjpeg($imgInput['tmp_name']);
+    $filename = $imgDir . $nombre . '-'.$anchoInput.'x'.$altoInput.'.jpg';
+    
+    $thumb_width = $anchoInput;
+    $thumb_height = $altoInput;
+    
+    $width = imagesx($image);
+    $height = imagesy($image);
+    
+    $original_aspect = $width / $height;
+    
+    $thumb_aspect = $thumb_width / $thumb_height;
+    
+    if ( $original_aspect >= $thumb_aspect ) {
+        // If image is wider than thumbnail (in aspect ratio sense)
+        $new_height = $thumb_height;
+        $new_width = $width / ($height / $thumb_height);
+        
+    } else {
+        // If the thumbnail is wider than the image
+        $new_width = $thumb_width;
+        $new_height = $height / ($width / $thumb_width);
+        
+    }
+    
+    $thumb = imagecreatetruecolor( $thumb_width, $thumb_height );
+    
+    // Resize and crop
+    imagecopyresampled( $thumb,
+    $image,
+    0 - ($new_width - $thumb_width) / 2, // Center the image horizontally
+    0 - ($new_height - $thumb_height) / 2, // Center the image vertically
+    0, 0,
+    $new_width,
+    $new_height,
+    $width,
+    $height);
+    imagejpeg($thumb, $filename, 80);
+}
+
+function imgToServer($imgInput, $nameInput, $rutaInput){
+    // Array de tipos de archivo que admitimos en nuestro servidor
+    $extensiones = array(
+    0 => 'image/jpg',
+    1 => 'image/jpeg',
+    2 => 'image/png',
+    3 => 'image/gif'
+      );
+    
+    
+    // Tamaño máximo del archivo en bits 1MB
+    $maxSize = 1024 * 1024 * 8;
+    // Cogemos la ruta del servidor, que luego nos servirá para seleccionar la carpeta de destino
+    $ruta_server = dirname(realpath(__FILE__));
+    // Nombre y ruta temporal
+    $origen = $imgInput['tmp_name'];
+    
+    // Guardamos la extensión del archivo a parte para poder crear y llamar a varias versiones del archivo
+    $extension = pathinfo($imgInput['name'], PATHINFO_EXTENSION);
+    
+    
+    // Ruta de destino a la carpeta del servidor donde se guardarán las fotos
+    $destino = $ruta_server . '/'. $rutaInput . $nameInput . '-original.' . $extension;
+    
+    
+    
+    if (in_array($imgInput['type'], $extensiones)) {
+        
+        if ($imgInput['size'] < $maxSize) {
+            
+            if (move_uploaded_file($origen, $destino)) {
+                echo '<script>alert("Fichero guardado con éxito")</script>';
+            }
+        } else {
+            echo '<script>alert("Archivo demasiado grande")</script>';
+        }
+    }
+}
+
