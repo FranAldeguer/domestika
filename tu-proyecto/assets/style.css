@@ -718,8 +718,8 @@ tr.table-header > td{
   grid-gap: 10px;
    grid-auto-rows: minmax(100px, auto);*/ 
    
-   display: inline-grid;
-  grid-template-columns: repeat(3, 2fr);
+  display: inline-grid;
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 120px;
   grid-auto-rows: minmax(100px, auto);
 }
