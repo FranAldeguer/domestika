@@ -28,7 +28,7 @@ if ($app_db == false){
 
 require('inc/class-db.php');
 require('inc/class-user.php');
-//require('inc/posts.php');
+//require('inc/posts_sinPOO.php');
 require('inc/class-post.php');
 require('inc/helpers.php');
 

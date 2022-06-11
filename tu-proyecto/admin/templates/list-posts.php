@@ -13,11 +13,12 @@
   <table>
     <?php foreach ($all_posts as $post) : ?>
       <tr>
-        <td> <?php echo $post['title']; ?> </td>
+        <td> <?php echo $post->getId(); ?> </td>
+        <td> <?php echo $post->getTitle(); ?> </td>
         <td>
-          <?php echo generate_update_post_url($post['id'], "Modificar"); ?>
+          <?php echo generate_update_post_url($post->getId(), "Modificar"); ?>
           &nbsp;&nbsp;&nbsp;&nbsp;
-          <?php echo generate_delete_post_url($post['id'], "Eliminar"); ?>
+          <?php echo generate_delete_post_url($post->getId(), "Eliminar"); ?>
         </td>
       </tr>
     <?php endforeach?>

@@ -1,7 +1,7 @@
 <?php require('../init.php');?>
 
 <?php
-if (isset($_POST['enviar-img']) || isset($_FILES['image-input'])) {
+if (isset($_POST['enviar-img']) && isset($_FILES['image-input'])) {
     
     $img_input = $_FILES['image-input'];
     $img_name = "IMG_" . date("Ymd_His");
@@ -11,8 +11,12 @@ if (isset($_POST['enviar-img']) || isset($_FILES['image-input'])) {
     redimensionarImg($img_input, 400, 250, $img_name, $img_dir);
     
     imgToServer($img_input, $img_name, $img_dir);
-    
-    
+    $url = SITE_URL.'/pruebas/imgs/'. $img_name."-original.jpeg";
+    //die($url);
+    ?>
+    <img src="<?php echo $url ?>">
+    <?php
+}
     
     /*
     // Array de tipos de archivo que admitimos en nuestro servidor
@@ -115,10 +119,5 @@ if (isset($_POST['enviar-img']) || isset($_FILES['image-input'])) {
     
     */
     
-    ?>
-<img src="<?php ?>">
 
-<?php
-
-}
 ?>

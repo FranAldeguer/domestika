@@ -13,16 +13,17 @@
 <?php
 
 if($is_update){
-    $update_post = get_post($_GET['update-post']);
-    $title = $update_post[0]['title'];
-    $excerpt = $update_post[0]['excerpt'];
-    $content = $update_post[0]['content'];
-    $id = $update_post[0]['id'];
+    $update_post = Post::_getPost($_GET['update-post']);
+    $title = $update_post->getTitle();
+    $excerpt = $update_post->getExcerpt();
+    $content = $update_post->getContent();
+    $user = $update_post->getUser_id();
+    $id = $update_post->getId();
 }
 
  ?>
 <!-- Inicio del formulario -->
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
   <!--
                                   SANEAR CONTENIDO DE SALIDA
           Con htmlspecialchars convertimos los caracteres espceciales en entidades html
@@ -38,6 +39,9 @@ if($is_update){
 
   <label for="content"> Contenido </label>
   <textarea name="content" id="content" cols="30" rows="30"><?php echo htmlspecialchars($content, ENT_QUOTES); ?></textarea>
+  
+  <label for="post-img">Imagen principal</label>
+  <input type="file" id="post-img" name="post-img"><br>
 
 
   <input type="submit"
@@ -48,7 +52,10 @@ if($is_update){
 
     <input type="hidden" id="postid" name="postid" value="<?php echo $id; ?>">
     <input type="hidden" id="published_on" name="published_on" value="<?php echo $id; ?>">
-
+    <?php if ($is_update):?>
+      <input type="hidden" id="userid" name="userid" value="<?php echo $user; ?>">
+    <?php endif;?>
+    
 </form>
 
 <!-- Fin del formulario -->

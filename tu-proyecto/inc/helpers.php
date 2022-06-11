@@ -208,13 +208,17 @@ function imgToServer($imgInput, $nameInput, $rutaInput){
     if (in_array($imgInput['type'], $extensiones)) {
         
         if ($imgInput['size'] < $maxSize) {
-            
-            if (move_uploaded_file($origen, $destino)) {
-                echo '<script>alert("Fichero guardado con éxito")</script>';
+            //die("Ruta: " . $destino);
+            if (!move_uploaded_file($origen, $destino)) {
+                die("Error: helpers 213");
             }
         } else {
-            echo '<script>alert("Archivo demasiado grande")</script>';
+            die ("Archivo demasiado grande: Helpers 216");
         }
     }
+}
+
+function alert($msj) {
+    echo "<script>alert('$msj');</script>";
 }
 

@@ -12,6 +12,7 @@ class Db {
   }
 
   public function query($query){
+      //alert($query);
     $result = mysqli_query ($this->app_db, $query);
     if(!$result){
       die($this->get_last_error());

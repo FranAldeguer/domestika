@@ -18,44 +18,71 @@ switch ( $action ) {
       $excerpt = '';
       $content = '';
       $id = '';
+      $user = '';
       $published_on = '';
+      $img_ext = '';
+      $img_input = '';
+      $img_name = '';
+      $img_dir = '../media/';
+      
+      $nuevoPost = new Post($title, $excerpt, $content, $published_on, $user, $img_name, $img_ext);
+      
+      
+      if(isset($_POST['submit-new-post']) || isset($_POST['submit-update-post'])){
+          $nuevoPost->setTitle(filter_input( INPUT_POST, 'title', FILTER_SANITIZE_STRING ));
+          //$excerpt = $_POST['excerpt']; -- ESTO NO ES SEGURO
+          $nuevoPost->setExcerpt(filter_input( INPUT_POST, 'excerpt', FILTER_SANITIZE_STRING ));
+          
+          $nuevoPost->setContent(strip_tags($_POST['content'], '<br><p><b><a><img>'));
+      }
+      
+      
+      if (isset($_POST['submit-new-post']) && isset($_FILES['post-img'])) {
+    //if (isset($_POST['submit-new-post'])) {
 
-      if (isset($_POST['submit-new-post'])){
-
-        $title = filter_input( INPUT_POST, 'title', FILTER_SANITIZE_STRING );
-        //$excerpt = $_POST['excerpt']; -- ESTO NO ES SEGURO
-        $excerpt = filter_input( INPUT_POST, 'excerpt', FILTER_SANITIZE_STRING );
-
-        $content = strip_tags($_POST['content'], '<br><p><b><a><img>');
-
-        if( empty($title) || empty($content)){
+        
+        
+        
+        $nuevoPost->setImgExt(pathinfo($_FILES['post-img']['name'], PATHINFO_EXTENSION));
+        
+        $img_name = "IMG_" . date("Ymd_His");
+        
+        $nuevoPost->setImgName($img_name);
+        
+        $img_input = $_FILES['post-img'];
+        redimensionarImg($img_input, IMG_POST_PREVIEW_h, IMG_POST_PREVIEW_w, $img_name, $img_dir); // En helpers.php
+        redimensionarImg($img_input, 400, 250, $img_name, $img_dir);
+        redimensionarImg($img_input, IMG_POST_HEADER_w, IMG_POST_HEADER_h, $img_name, $img_dir);
+        imgToServer($img_input, $img_name, $img_dir);
+        //alert($nuevoPost->getImgExt());
+        
+        if( empty($nuevoPost->getTitle()) || empty($nuevoPost->getContent())){
           $error = true;
         }else{
-          insert_post($title, $excerpt, $content);
+            $nuevoPost->insert();
+          //insert_post($title, $excerpt, $content, $img_name, $img_ext);
           // Redirigimos a la home, después de insertar
           redirect_to ('admin?success=true&action=list-posts');
         }
       }
-
+        
         if (isset($_POST['submit-update-post'])){
-          $title = filter_input( INPUT_POST, 'title', FILTER_SANITIZE_STRING );
-          $excerpt = filter_input( INPUT_POST, 'excerpt', FILTER_SANITIZE_STRING );
-          $id = filter_input( INPUT_POST, 'postid', FILTER_SANITIZE_STRING );
-          $content = strip_tags($_POST['content'], '<br><p><b><a><img>');
+            $nuevoPost->setId(filter_input( INPUT_POST, 'postid', FILTER_SANITIZE_STRING ));
+            $nuevoPost->setUser_id(filter_input( INPUT_POST, 'userid', FILTER_SANITIZE_STRING ));
 
-          $id = $_POST['postid'];
-
-          if( empty($title) || empty($content) ){
+            if( empty($nuevoPost->getTitle()) || empty($nuevoPost->getContent())){
             $error = true;
           }else{
 
-            if ( !check_hash ('update-post-' . $id, $_GET['hash'] ) ){
+              if ( !check_hash ('update-post-' . $nuevoPost->getId(), $_GET['hash'] ) ){
               die( 'No toques las cosas de tocar ;)');
             }
-
-            update_post($id, $title, $excerpt, $content);
+            
+            //die($nuevoPost);
+            
+            $nuevoPost->update();
             // Redirigimos a la vista del post, después de insertar
-            redirect_to ('?updated=true&view='.$id);
+            redirect_to ('?updated=true&view='.$nuevoPost->getId());
           }
         }
 
@@ -69,12 +96,14 @@ switch ( $action ) {
     	if ( !check_hash ('delete-post-' . $_GET['delete-post'], $_GET['hash'] ) ){
     		die( 'hackeando, no?');
     	}
-
-    	delete_post($_GET['delete-post']);
+        
+    	$post = Post::_getPost($_GET['delete-post']);
+    	$post->delete();
+    	
     	redirect_to( 'admin/index.php?delete-post-ok=ok&action=list-posts');
     }
 
-    $all_posts = get_all_posts();
+    $all_posts = Post::_getAllPosts();
 
     require 'templates/list-posts.php';
 

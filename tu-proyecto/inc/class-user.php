@@ -47,10 +47,15 @@
     * retrun User;
     *
     */
-    public static function _getUser($id){
+    public static function _getUser($userid){
       global $app_db;
-      $query = "SELECT * FROM users WHERE id = " . $id;
+      
+      $query = "SELECT * FROM users WHERE id = " . $userid;
+      
+      //die("adfasdfasdf = ".$userid);
+      
       $result = $app_db->query($query);
+      
 
       $usuario = $app_db->fetch_assoc($result);
       $temp = new User("","","","");
@@ -68,31 +73,20 @@
     
 
     public static function _getAllUsers(){
-      global $app_db;
+        global $app_db;
 
-      $query = "SELECT * FROM users WHERE id != 0";
-      $result = $app_db->query($query);
+        $query = "SELECT * FROM users WHERE id != 0";
+        $result = $app_db->query($query);
 
-      $usuarios = $app_db->fetch_all($result);
+        $usuarios = $app_db->fetch_all($result);
 
-      $usuariosArr = [];
-      
-      foreach ($usuarios as $u) {
-          
-          
-            $temp = new User("","","","");
-            
-            $temp->setId($u['id']);
-            $temp->setEmail($u['email']);
-            $temp->setName($u['username']);
-            $temp->setPassword($u['password']);
-            $temp->setRole($u['role']);
-            
-            array_push($usuariosArr, $temp);        
-      }
-      
-      return $usuariosArr;
+        $usuariosArr = [];
 
+        foreach ($usuarios as $u) {
+            array_push($usuariosArr, User::_getUser($u['id']));
+        }
+
+        return $usuariosArr;
     }
 
     public function insertUser(){
@@ -135,6 +129,8 @@
         $query .= "', role = '" . $this->role;
         $query .= "' WHERE id = ". $this->id .";";
         
+        $query="UPDATE posts SET title = 'abcd', excerpt = '12345697adfdsf', content = 'ÑDFKAJSDLÑFJASDLFKJASLÑDJF' WHERE id = 78;";
+        //die($query);
         $app_db->query($query);
         
     }
